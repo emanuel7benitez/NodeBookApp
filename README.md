@@ -64,9 +64,6 @@ PORT=1234
 📦 Instalación
 Clona el repositorio y entra en la carpeta del proyecto:
 
-bash
-Copiar
-Editar
 git clone https://github.com/tu-usuario/tu-repo.git
 cd tu-repo
 Instala las dependencias:
