@@ -1,99 +1,139 @@
-# API REST: Tareas y Usuarios
+# 📚 API REST: Books y Usuarios
 
-Este proyecto es una API RESTful desarrollada en Node.js y TypeScript, que permite la gestión de tareas y usuarios. Utiliza Express como framework principal y MongoDB como base de datos, con autenticación basada en JWT.
+Este proyecto es una **API RESTful** desarrollada con **Node.js** y **TypeScript**, diseñada para gestionar libros y usuarios. Utiliza **Express** como framework principal, **MongoDB** como base de datos, y autenticación basada en **JWT**.
 
-## Funcionalidades principales
+---
 
-- **Usuarios**: Registro y login de usuarios con autenticación JWT.
-- **Tareas**: CRUD de tareas asociadas a cada usuario autenticado.
-- **Validación**: Validación de datos de entrada usando Zod.
-- **Protección de rutas**: Solo usuarios autenticados pueden acceder a las rutas de tareas.
+## 🚀 Funcionalidades principales
 
-## Rutas principales
+- 🔐 **Usuarios**: Registro y login con autenticación JWT.
+- 📖 **Books**: CRUD de libros asociados a cada usuario autenticado.
+- 🏷️ **Géneros**: Acceso a la lista de géneros disponibles.
+- ✅ **Validación**: Validación de datos de entrada usando **Zod**.
+- 🛡️ **Protección de rutas**: Solo usuarios autenticados pueden acceder a las rutas de libros.
 
-- **Usuarios** → `/api/auth`
-  - `POST /register` - Registro de usuario
-  - `POST /login` - Login de usuario
-- **Tareas** → `/api/tasks`
-  - `GET /` - Obtener todas las tareas del usuario autenticado
-  - `POST /` - Crear una nueva tarea
-  - `PATCH /:id` - Actualizar una tarea existente
-  - `DELETE /:id` - Eliminar una tarea
 
-## Requisitos
+## 🌐 Rutas disponibles
 
-- Node.js >= 18.x
+### 🔐 Usuarios → `/api/auth`
+
+| Método | Ruta          | Descripción             |
+|--------|---------------|-------------------------|
+| POST   | `/register`   | Registro de usuario     |
+| POST   | `/login`      | Login de usuario        |
+
+---
+
+### 📘 Books → `/api/books`
+
+| Método | Ruta         | Descripción                          |
+|--------|--------------|--------------------------------------|
+| GET    | `/`          | Obtener todos los libros del usuario |
+| POST   | `/`          | Crear un nuevo libro                 |
+| PATCH  | `/:id`       | Actualizar un libro existente        |
+| DELETE | `/:id`       | Eliminar un libro                    |
+
+---
+
+### 🏷️ Géneros → `/api/genders`
+
+| Método | Ruta         | Descripción                     |
+|--------|--------------|---------------------------------|
+| GET    | `/`          | Obtener todos los géneros       |
+
+---
+
+## ⚙️ Requisitos
+
+- Node.js `>= 18.x`
 - MongoDB (local o en la nube)
 - npm
 
-## Variables de entorno
+---
+
+## 🛠️ Variables de entorno
 
 Crea un archivo `.env` en la raíz del proyecto con el siguiente contenido:
 
-```
+```env
 URI_DB=mongodb://localhost:27017/tu_basededatos
 JWT_SECRET=tu_clave_secreta
 JWT_EXPIRES=86400
 PORT=1234
-```
 
-Tambien puedes encontrar las declaraciones en el `.env.example`
+📦 Instalación
+Clona el repositorio y entra en la carpeta del proyecto:
 
-Ajusta los valores según tu entorno.
+bash
+Copiar
+Editar
+git clone https://github.com/tu-usuario/tu-repo.git
+cd tu-repo
+Instala las dependencias:
 
-## Instalación
+npm install
+Compila el proyecto (opcional, para producción):
 
-1. Clona el repositorio y entra en la carpeta del proyecto.
-2. Instala las dependencias:
+npm run build
+▶️ Ejecución
+Modo desarrollo (con recarga automática):
 
-   ```
-   npm install
-   ```
+npm run dev
+Modo producción (tras compilar):
 
-3. Compila el proyecto (opcional, para producción):
+npm start
+El servidor quedará escuchando en el puerto definido en la variable de entorno PORT (por defecto: 1234).
 
-   ```
-   npm run build
-   ```
+🔐 Autenticación
+Para acceder a las rutas protegidas (/api/books, /api/genders) es necesario enviar el token JWT en la cabecera:
 
-## Ejecución
+Authorization: Bearer <token>
+🧪 Ejemplos de uso
+✅ Crear un libro:
 
-- **Modo desarrollo** (con recarga automática):
+POST http://localhost:1234/api/books
+Content-Type: application/json
+Authorization: Bearer <token>
 
-  ```
-  npm run dev
-  ```
+{
+  "text": "Harry Potter",
+  "gender": "Ficción"
+}
+📚 Obtener géneros:
 
-- **Modo producción** (tras compilar):
+GET http://localhost:1234/api/genders
+Authorization: Bearer <token>
+❌ Eliminar un libro:
 
-  ```
-  npm start
-  ```
+DELETE http://localhost:1234/api/books/123456
+Authorization: Bearer <token>
+🧭 Métodos HTTP utilizados
+GET – Obtener datos
 
-El servidor quedará escuchando en el puerto definido en la variable de entorno `PORT` (por defecto, 1234).
+POST – Crear datos
 
-## Ejemplo de uso
+PATCH – Actualizar datos
 
-> Borrar una tarea:
+DELETE – Eliminar datos
 
-```http
-DELETE http://localhost:1234/api/tasks/1
-```
+✍️ Autor
+Emmanuel Benitez
+🔗 GitHub: https://github.com/emanuel7benitez/
 
-Recuerda que para acceder a las rutas de tareas necesitas enviar el token JWT en la cabecera `Authorization` como `Bearer <token>`.
+✅ Estado del proyecto
+✅ En desarrollo – listo para pruebas con autenticación, gestión de libros y consulta de géneros.
 
-## 2. Cada pedido (query) tiene internamente definido qué quiere hacer con la data
+🧰 Tecnologías utilizadas
+Node.js
 
-Utilizamos los métodos HTTP:
+Express
 
-- `GET` – Obtener datos
-- `POST` – Crear datos
-- `PATCH` – Actualizar datos
-- `DELETE` – Eliminar datos
+TypeScript
 
-### Ejemplo:
+MongoDB con Mongoose
 
-> Quiero borrar una tarea:
+Zod (validaciones)
 
-```http
-DELETE https://miservidor.com/api/tasks/1
+JWT (autenticación)
+
+Dotenv
