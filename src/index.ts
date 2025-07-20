@@ -1,11 +1,10 @@
 import "dotenv/config"
 import express from "express"
 import { connect } from "./config/mongoConnect";
-import { taskRouter } from "./routes/taskRouter";
 import { authRouter } from "./routes/authRouter"
-import cors from "cors"
-import { apiLimiter } from "./middlewares/rateLimit";
+import cors from "cors";
 import { genderRouter } from "./routes/genderRouter";
+import { bookRouter } from "./routes/bookRouter";
 
 const PORT = process.env.PORT ?? 1234
 
@@ -15,7 +14,7 @@ app.use(cors())
 
 app.use("/api/auth", authRouter)
 app.use("/api/genders", genderRouter)
-app.use("/api/tasks", taskRouter)
+app.use("/api/books", bookRouter)
 
 app.use("/api", (req, res) => {
   res.status(404).json({
@@ -26,7 +25,7 @@ app.use("/api", (req, res) => {
 app.use((req, res) => {
   res.json({
     status: 200,
-    tasks: "/api/tasks"
+    books: "/api/books"
   })
 })
 

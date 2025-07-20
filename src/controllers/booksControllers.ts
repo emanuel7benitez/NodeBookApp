@@ -1,9 +1,9 @@
 // tomar y sanitizar data de entrada (input)
 // procesos internos -> hash de la contraseña
 import { Request, Response } from "express"
-import { Book } from "../models/TasksModel"
 import { HTTP_STATUS_CODES } from "../utils/statusCodes"
-import { bookSchema } from "../validators/TaskSchemaValidator"
+import { Book } from "../models/BooksModel"
+import { bookSchema } from "../validators/BookSchemaValidator"
 
 const {
   OK,
@@ -19,18 +19,18 @@ declare module "express" {
   }
 }
 
-const getAllTasks = async (req: Request, res: Response) => {
+const getAllBooks = async (req: Request, res: Response) => {
   try {
     const userId = req.userId
-    const tasks = await Book.find({ userId })
-    res.status(OK).json({ success: true, message: "Éxito al obtener las tareas", data: tasks })
+    const books = await Book.find({ userId })
+    res.status(OK).json({ success: true, message: "Éxito al obtener las tareas", data: books })
   } catch (error: any) {
     res.status(INTERNAL_SERVER_ERROR).json({ success: false, message: error.message })
   }
 }
 
 
-const createTask = async (req: Request, res: Response): Promise<void> => {
+const createBook = async (req: Request, res: Response): Promise<void> => {
   const body = req.body
   const userId = req.userId
   try {
@@ -43,16 +43,16 @@ const createTask = async (req: Request, res: Response): Promise<void> => {
       return
     }
 
-    const newTask = new Book({ text, userId, gender })
-    await newTask.save()
+    const newBook = new Book({ text, userId, gender })
+    await newBook.save()
 
-    res.status(CREATED).json({ success: true, message: "Tarea registrada con éxito", data: newTask })
+    res.status(CREATED).json({ success: true, message: "Tarea registrada con éxito", data: newBook })
   } catch (error: any) {
     res.status(INTERNAL_SERVER_ERROR).json({ success: false, message: error.message })
   }
 }
 
-const updateTask = async (req: Request, res: Response): Promise<void> => {
+const updateBook = async (req: Request, res: Response): Promise<void> => {
   const id = req.params.id
   const body = req.body
   const userId = req.userId
@@ -64,24 +64,24 @@ const updateTask = async (req: Request, res: Response): Promise<void> => {
       return
     }
 
-    const task = await Book.findOne({ _id: id, userId })
+    const book = await Book.findOne({ _id: id, userId })
 
-    if (!task) {
+    if (!book) {
       res.status(NOT_FOUND).json({ success: false, message: "Tarea no encontrada" })
       return
     }
 
-    task.completed = !task.completed
-    await task.save()
+    book.completed = !book.completed
+    await book.save()
 
-    res.json({ success: true, message: "Tarea actualizada con éxito", data: task })
+    res.json({ success: true, message: "Tarea actualizada con éxito", data: book })
   } catch (error) {
     const err = error as Error
     res.status(INTERNAL_SERVER_ERROR).json({ success: false, message: err.message })
   }
 }
 
-const deleteTask = async (req: Request, res: Response): Promise<void> => {
+const deleteBook = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params
   const userId = req.userId
 
@@ -91,17 +91,17 @@ const deleteTask = async (req: Request, res: Response): Promise<void> => {
       return
     }
 
-    const deletedTask = await Book.findByIdAndDelete({ _id: id, userId })
-    if (!deletedTask) {
+    const deletedBook = await Book.findByIdAndDelete({ _id: id, userId })
+    if (!deletedBook) {
       res.status(NOT_FOUND).json({ success: false, message: "Error al encontrar la tarea" })
       return
     }
 
-    res.json({ success: true, message: "Tarea borrada con éxito", data: deletedTask._id })
+    res.json({ success: true, message: "Tarea borrada con éxito", data: deletedBook._id })
   } catch (error) {
     const err = error as Error
     res.status(INTERNAL_SERVER_ERROR).json({ success: false, message: err.message })
   }
 }
 
-export { getAllTasks, createTask, updateTask, deleteTask }
+export { getAllBooks, createBook, updateBook, deleteBook }

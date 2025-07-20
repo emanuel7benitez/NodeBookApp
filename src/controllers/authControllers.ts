@@ -30,7 +30,7 @@ const register = async (req: Request, res: Response): Promise<void> => {
     const newUser = new User({name, email, password: hash })
     await newUser.save()
 
-    const token = generateToken(newUser._id.toString())
+    const token = generateToken(newUser)
 
     res.status(CREATED).json({ success: true, message: "Usuario registrado exitosamente", token })
   } catch (error) {
